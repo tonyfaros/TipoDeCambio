@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -54,22 +55,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickCambio(View view){
-
-        switch (radioGroup.getCheckedRadioButtonId()){
-            case R.id.radioBtnCRC:
-                parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=USD_CRC&compact=ultra");
-                break;
-            case R.id.radioBtnUSD:
-                parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=CRC_USD&compact=ultra");
-                break;
+        if(montoIngresado.getText().equals(""))
+            Toast.makeText(this,"Por favor ingrese un monto",Toast.LENGTH_SHORT).show();
+        else{
+            switch (radioGroup.getCheckedRadioButtonId()){
+                case R.id.radioBtnCRC:
+                    parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=USD_CRC&compact=ultra");
+                    break;
+                case R.id.radioBtnUSD:
+                    parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=CRC_USD&compact=ultra");
+                    break;
+            }
         }
+
 
     }
 
     public void parseJson(String url){
-
-        //String url = "https://api.myjson.com/bins/7lwv5";
-        //Log.e("ASDf", "me lleva la zorra");
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -90,40 +92,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mQueue.add(jsonObjReq);
-        /*StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("response",response.toString());
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-
-            }
-        });
-        mQueue.add(stringRequest);
-        */
-        /*StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("response","sadfasd");
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Log.e("response","shit");
-            }
-        });*/
-
     }
-
-
 }

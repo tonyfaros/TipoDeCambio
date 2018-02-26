@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:buttonTint="@android:color/holo_blue_dark"
                 android:onClick="onClickCambio"
-                android:text="Dolares"
+                android:text="Dólares"
                 android:textSize="20sp" />
 
         </RadioGroup>
@@ -67,7 +67,7 @@
             android:backgroundTint="@android:color/holo_blue_dark"
             android:ems="10"
             android:hint="Digite el monto"
-            android:inputType="textPersonName|numberDecimal" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:id="@+id/textView2"
@@ -75,7 +75,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="37dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="39dp"
             android:text="Mostrar resultado en:"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="20sp" />

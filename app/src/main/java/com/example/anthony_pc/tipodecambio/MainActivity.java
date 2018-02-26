@@ -1,7 +1,6 @@
 package com.example.anthony_pc.tipodecambio;
 
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,33 +9,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
+
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
+
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -81,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                else{
-                   
-                }
+                else{}
             }
         });
 
@@ -96,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             monto = Double.parseDouble(montoIngresado.getText().toString());
 
         }catch (NumberFormatException e){
-            Toast.makeText(this, "Numero no valido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Número no válido", Toast.LENGTH_SHORT).show();
             txtResultado.setText("");
             montoIngresado.setText("");
             return;

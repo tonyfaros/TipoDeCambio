@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText montoIngresado;
     private Double tipoCambio = 0.000;
     private Double resultado = 0.000;
-    private ImageView imgIngreso;// =
-    private ImageView imgResul;// =
+    private ImageView imgIngreso;
+    private ImageView imgResul;
 
 
     @Override
@@ -58,19 +60,45 @@ public class MainActivity extends AppCompatActivity {
         mQueue = Volley.newRequestQueue(this);
         imgResul = findViewById(R.id.imageViewResu);
         imgIngreso = findViewById(R.id.imageViewIng);
-        //parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=USD_CRC&compact=ultra");
+        parseJson("http://www.apilayer.net/api/live?access_key=28f50adf000d76e4f35a832e251d65de");
+        montoIngresado.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!montoIngresado.getText().toString().equals("")){
+                    try {
+                        onClickCambio(null);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                   
+                }
+            }
+        });
 
     }
 
-    public void onClickCambio(View view){
-        final String CRC_USD = "CRC_USD";
-        final String USD_CRC ="USD_CRC";
+    public void onClickCambio(View view) throws InterruptedException {
         Double monto = 0.000;
 
         try{
             monto = Double.parseDouble(montoIngresado.getText().toString());
+
         }catch (NumberFormatException e){
-            Toast.makeText(this, "Numero no valido", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(this, "Numero no valido", Toast.LENGTH_SHORT).show();
+            txtResultado.setText("");
+            montoIngresado.setText("");
             return;
         }
 
@@ -79,21 +107,17 @@ public class MainActivity extends AppCompatActivity {
                 imgIngreso.setImageResource(R.drawable.dollar);
                 imgResul.setImageResource(R.drawable.colones);
 
-                Log.e("prueba","USD_CRC");
-                //parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=USD_CRC&compact=ultra",USD_CRC);
-                //resultado = parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=USD_CRC&compact=ultra") * Integer.parseInt(montoIngresado.getText().toString());
-                 resultado = (monto * 566.36);
+                resultado = monto * tipoCambio ;
 
+                Log.e("cambio",tipoCambio.toString());
                 txtResultado.setText(String.format("%.2f",resultado));
-                //txtResultado.setText(resultado.toString());
                 break;
             case R.id.radioBtnUSD:
                 imgResul.setImageResource(R.drawable.dollar);
                 imgIngreso.setImageResource(R.drawable.colones);
-                Log.e("prueba","usd");
-                //parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=CRC_USD&compact=ultra",CRC_USD);
-                //resultado = parseJson("http://free.currencyconverterapi.com/api/v3/convert?q=CRC_USD&compact=ultra") * Integer.parseInt(montoIngresado.getText().toString());
-                resultado = (Integer.parseInt(montoIngresado.getText().toString()) / 566.36);
+
+                resultado = monto / tipoCambio ;
+                Log.e("cambio",tipoCambio.toString());
                 txtResultado.setText(String.format("%.2f",resultado));
                 break;
         }
@@ -102,20 +126,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void parseJson(String url, final String tipo){
-        tipoCambio = 0.0;
-        resultado = 0.0;
+    public void parseJson(String url){
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Log.e("prueba",response.get("USD_CRC").toString());
-                            tipoCambio = Double.parseDouble(response.get(tipo).toString());
-                            resultado = tipoCambio * Integer.parseInt(montoIngresado.getText().toString());
-                            txtResultado.setText(resultado.toString());
-                            Log.e("prueba",response.get("USD_CRC").toString());
+
+                            Log.e("parse",response.getString("success"));
+                            tipoCambio = Double.parseDouble(response.getJSONObject("quotes").get("USDCRC").toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
